@@ -5,23 +5,21 @@ from reportlab.graphics.barcode.qr import QrCodeWidget
 from reportlab.graphics import renderPDF
 from reportlab.lib.units import cm
 from datetime import date
+from config import cfg
 
-BKG = "input/background_teste.png"
-BKG_WIDTH = 2 * 9 * cm
-BKG_HEIGHT = 2 * 13 * cm
-NAME_SPOTS = [(155,131),(475,131),(155,593),(475,593)]
-CODE_SPOTS = [(105,150),(260,155),(105,390),(260,390)]
+BKG_WIDTH = 2 * cfg['BKG_WIDTH'] * cm
+BKG_HEIGHT = 2 * cfg['BKG_HEIGHT'] * cm
 
 def draw_page(canvas, names, codes):
 
     names = map(str.upper, names)
-    canvas.drawImage(BKG, 0, 0, width=BKG_WIDTH, height=BKG_HEIGHT)
+    canvas.drawImage(cfg['BKG'], 0, 0, width=BKG_WIDTH, height=BKG_HEIGHT)
 
     for i in range(len(names)):
         name = names[i]
         code = codes[i]
-        draw_name(canvas, trip(name), NAME_SPOTS[i])
-        draw_code(canvas, name, codes[i], CODE_SPOTS[i])
+        draw_name(canvas, trip(name), cfg['NAME_SPOTS'][i])
+        draw_code(canvas, name, codes[i], cfg['CODE_SPOTS'][i])
 
 def draw_name(canvas, name, (x,y)):
     #canvas.setFont("Quicksand-Bold", 14)
