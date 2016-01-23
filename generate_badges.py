@@ -13,8 +13,8 @@ codes = []
 count = 1
 for row in read_csv(cfg['INPUT_FILENAME']):
 
-    names.append(row[cfg['NAME_ROW_INDEX']])
-    codes.append(row[cfg['CODE_ROW_INDEX']])
+    names.append(row[cfg['NAME_COL_INDEX']])
+    codes.append(row[cfg['CODE_COL_INDEX']])
 
     if len(names) == 4:
         draw_page(pdf, names, codes)

@@ -6,6 +6,7 @@ from reportlab.graphics import renderPDF
 from reportlab.lib.units import cm
 from datetime import date
 from config import cfg
+from reportlab.pdfbase.pdfmetrics import stringWidth
 
 BKG_WIDTH = 2 * cfg['BKG_WIDTH'] * cm
 BKG_HEIGHT = 2 * cfg['BKG_HEIGHT'] * cm
@@ -22,8 +23,8 @@ def draw_page(canvas, names, codes):
         draw_code(canvas, name, codes[i], cfg['CODE_SPOTS'][i])
 
 def draw_name(canvas, name, (x,y)):
-    #canvas.setFont("Quicksand-Bold", 14)
-    canvas.drawString(x, y, name.decode('utf-8', errors='ignore'))
+    canvas.setFont("Helvetica", 12)
+    canvas.drawCentredString(x, y, name.decode('utf-8', errors='ignore'))
 
 def draw_code(canvas, name, code, (x,y)):
     qrcode_content = 'Associação Atlética Floresta, ' + str(date.today().year) + ' | ' + name + ' | ' + str(code)
@@ -35,4 +36,5 @@ def draw_code(canvas, name, code, (x,y)):
     renderPDF.draw(d, canvas, x-q.barWidth/2, y-q.barHeight/2)
 
 def trip(name):
-    return name[0:29] + "..." if len(name) > 32 else name
+    max_length = 28
+    return name[0:max_length-3] + "..." if len(name) > max_length else name
