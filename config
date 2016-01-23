@@ -1,0 +1,14 @@
+[input]
+csv = input/associados.csv
+bkg = input/background_teste.png
+bkg.width = 9
+bkg.height = 13
+
+[output]
+pdf = output/crachas.pdf
+
+[default]
+namespots = [(155,131),(475,131),(155,593),(475,593)]
+codespots = [(105,150),(260,155),(105,390),(260,390)]
+code_row_index = 0
+name_row_indes = 1
