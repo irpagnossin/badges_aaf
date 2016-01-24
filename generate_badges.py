@@ -3,9 +3,11 @@
 from read_csv import read_csv
 from draw_page import draw_page
 from reportlab.pdfgen import canvas
+from reportlab.lib.colors import Color
 from config import cfg
 
 pdf = canvas.Canvas(cfg['OUTPUT_FILENAME'])
+pdf.setFillColor(cfg['COLOR'])
 pdf.setFont("Helvetica", 12)
 
 # Gera cada uma das imagens, de 4 em 4 associados
@@ -22,8 +24,10 @@ for row in read_csv(cfg['INPUT_FILENAME']):
         'plates': filter(lambda x: not x == '', plates), # Apenas as placas não nulas
     })
 
+    month_year = "FEVEREIRO 2016"
+
     if len(associates) == 4:
-        draw_page(pdf, associates)
+        draw_page(pdf, associates, month_year)
         pdf.showPage()
 
         associates = []
@@ -31,6 +35,6 @@ for row in read_csv(cfg['INPUT_FILENAME']):
 
 # Gera a última imagem, com 1, 2 ou 3 associados
 if not len(associates) == 0:
-    draw_page(pdf, associates)
+    draw_page(pdf, associates, month_year)
 
 pdf.save()
