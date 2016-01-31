@@ -20,7 +20,7 @@ def draw_page(canvas, associates, month_year):
 
     names = map(str.upper, [a['name'] for a in associates])
     titles = [a['title'] for a in associates]
-    plates = [a['plates'] for a in associates]
+    #plates = [a['plates'] for a in associates]
     secrets = [a['secret'] for a in associates]
 
     for i in range(len(names)):

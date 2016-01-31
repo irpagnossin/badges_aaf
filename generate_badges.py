@@ -15,13 +15,13 @@ associates = []
 count = 1
 for row in read_csv(cfg['INPUT_FILENAME']):
 
-    plates = [row[cfg['PLATE_1_COL_INDEX']], row[cfg['PLATE_2_COL_INDEX']]] # TODO: tornar independente da quantidade de placas
+    #plates = [row[cfg['PLATE_1_COL_INDEX']], row[cfg['PLATE_2_COL_INDEX']]] # TODO: tornar independente da quantidade de placas
 
     associates.append({
         'name': row[cfg['NAME_COL_INDEX']],
         'title': row[cfg['TITLE_COL_INDEX']],
         'secret': row[cfg['SECRET_COL_INDEX']],
-        'plates': filter(lambda x: not x == '', plates), # Apenas as placas não nulas
+        #'plates': filter(lambda x: not x == '', plates), # Apenas as placas não nulas
     })
 
     month_year = "FEVEREIRO 2016"
