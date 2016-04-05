@@ -24,7 +24,7 @@ for row in read_csv(cfg['INPUT_FILENAME']):
         #'plates': filter(lambda x: not x == '', plates), # Apenas as placas não nulas
     })
 
-    month_year = "MARÇO 2016"
+    month_year = cfg['MONTH_YEAR']
 
     if len(associates) == 4:
         draw_page(pdf, associates, month_year)

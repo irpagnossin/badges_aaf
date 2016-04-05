@@ -6,7 +6,7 @@ cfg = {
   #'PLATE_1_COL_INDEX': 5,
   #'PLATE_2_COL_INDEX': 6,
   'SECRET_COL_INDEX': 2,
-  #'INPUT_FILENAME': "input/abril_2016.csv",
+  'MONTH_YEAR': 'ABRIL 2016',
   'INPUT_FILENAME': "input/abril_2016.csv",
   'OUTPUT_FILENAME': "output/abril_2016.pdf",
   'BKG': "input/background.png",
