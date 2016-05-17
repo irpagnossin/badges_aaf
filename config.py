@@ -1,14 +1,15 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 from reportlab.lib.colors import Color
 
 cfg = {
-  'TITLE_COL_INDEX': 0,
-  'NAME_COL_INDEX': 1,
-  #'PLATE_1_COL_INDEX': 5,
-  #'PLATE_2_COL_INDEX': 6,
-  'SECRET_COL_INDEX': 2,
-  'MONTH_YEAR': 'ABRIL 2016',
-  'INPUT_FILENAME': "input/abril_2016.csv",
-  'OUTPUT_FILENAME': "output/abril_2016.pdf",
+  'TITLE_COL_NAME': 'Titulo',
+  'NAME_COL_NAME': 'Nome',
+  'YEAR': 2016,
+  'MONTH': 5, # eg., se maio, 5; se janeiro, 1
+  'INPUT_FILENAME': "input/maio_2016_compl.xlsx",
+  'OUTPUT_FILENAME': "output/maio_2016_compl.pdf",
+  'SECRETS_FILE': 'output/maio_2016_compl_secrets.xlsx',
   'BKG': "input/background.png",
   'BKG_WIDTH': 9,
   'BKG_HEIGHT': 13,
