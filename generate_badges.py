@@ -15,7 +15,7 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 locale.setlocale(locale.LC_TIME, 'pt_BR.utf8')
 
-
+anualistas = False
 
 n_args = len(sys.argv)
 
@@ -29,6 +29,7 @@ else:
 # se não, usa o mês seguinte ao atual.
 if n_args >= 3:
     month = int(sys.argv[2])
+    anualistas = month == 0
 else:
     month = datetime.date.today().month + 1
 
@@ -41,8 +42,12 @@ else:
 
 # Define os nomes dos dois arquivos de saída: um contendo os crachás (PDF)
 # e o outro, os segredos (XLSX).
-badges_filename = "./output/%s-%s.pdf" % (year, month)
-secrets_filename = "./output/%s-%s_secrets.xlsx" % (year, month)
+if anualistas:
+    badges_filename = "./output/%s.pdf" % year
+    secrets_filename = "./output/%s_secrets.xlsx" % year
+else:
+    badges_filename = "./output/%s-%s.pdf" % (year, month)
+    secrets_filename = "./output/%s-%s_secrets.xlsx" % (year, month)
 
 pdf = canvas.Canvas(badges_filename)
 pdf.setFillColor(cfg['COLOR'])
@@ -60,7 +65,11 @@ people.to_excel(secrets_filename, index=False)
 # Gera cada uma das imagens, de 4 em 4 associados
 associates = []
 count = 1
-month_name = "%s %s" % (datetime.date(year, month, 1).strftime('%B').upper(), str(year))
+
+if anualistas:
+    month_name = str(year)
+else:
+    month_name = "%s %s" % (datetime.date(year, month, 1).strftime('%B').upper(), str(year))
 
 for index, row in people.iterrows():
 
