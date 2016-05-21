@@ -8,6 +8,10 @@ from pandas import read_excel, Series
 from numpy.random import seed, randint
 import datetime
 import locale
+import sys
+
+reload(sys)
+sys.setdefaultencoding('utf8')
 
 pdf = canvas.Canvas(cfg['OUTPUT_FILENAME'])
 pdf.setFillColor(cfg['COLOR'])
@@ -19,8 +23,8 @@ locale.setlocale(locale.LC_TIME, 'pt_BR.utf8')
 associates = []
 count = 1
 
-year = int(cfg['YEAR'])
-month = int(cfg['MONTH'])
+year = int(sys.argv[1])
+month = int(sys.argv[2])
 
 name_column_title = cfg['NAME_COL_NAME']
 title_column_title = cfg['TITLE_COL_NAME']
@@ -29,6 +33,7 @@ secret_column_title = 'Secret'
 people = read_excel(cfg['INPUT_FILENAME'], sheetname=0)
 seed(int(year + month))
 people[secret_column_title] = Series(randint(0,100000,size=len(people)))
+print people
 
 for index, row in people.iterrows():
 
@@ -37,8 +42,8 @@ for index, row in people.iterrows():
         'title': str(row[title_column_title]),
         'secret': row[secret_column_title]
     })
-    
-    print associates
+
+    #print associates
 
     month_year = "%s %s" % (datetime.date(year, month, 1).strftime('%B').upper(), str(year))
 

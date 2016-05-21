@@ -42,6 +42,7 @@ def draw_title(canvas, title, (x,y)):
     canvas.drawCentredString(x, y, title)
 
 def draw_code(canvas, name, code, (x,y)):
+    print ">>> %s" % str(date.today().year)
     qrcode_content = 'Associação Atlética Floresta, ' + str(date.today().year) + ' | ' + name + ' | ' + str(code)
     q = QrCodeWidget(qrcode_content, barFillColor=COLOR)
     q.barHeight = 100
