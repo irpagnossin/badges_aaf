@@ -46,7 +46,7 @@ secrets_filename = "./output/%s-%s_secrets.xlsx" % (year, month)
 
 pdf = canvas.Canvas(badges_filename)
 pdf.setFillColor(cfg['COLOR'])
-pdf.setFont("Helvetica", 12)
+pdf.setFont(cfg['FONT_FAMILY'], cfg['FONT_SIZE'])
 
 SECRET_COL_NAME = 'Segredo'
 
