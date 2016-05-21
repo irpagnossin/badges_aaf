@@ -1,4 +1,5 @@
-
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 from read_csv import read_csv
 from draw_page import draw_page
 from reportlab.pdfgen import canvas
@@ -12,43 +13,65 @@ import sys
 
 reload(sys)
 sys.setdefaultencoding('utf8')
+locale.setlocale(locale.LC_TIME, 'pt_BR.utf8')
 
-pdf = canvas.Canvas(cfg['OUTPUT_FILENAME'])
+
+
+n_args = len(sys.argv)
+
+# Define o nome do arquivo de entrada a partir dos argumentos
+if n_args >= 2:
+    input_filename = sys.argv[1]
+else:
+    raise Exception('Qual é o arquivo de entrada?')
+
+# Se o mês for dado como argumento (numérico: 1..12), usa-o;
+# se não, usa o mês seguinte ao atual.
+if n_args >= 3:
+    month = int(sys.argv[2])
+else:
+    month = datetime.date.today().month + 1
+
+# Se o ano for dado como argumento (numérico), usa-o;
+# se não, usa o ano atual.
+if n_args >= 4:
+    year = int(sys.argv[3])
+else:
+    year = datetime.date.today().year
+
+# Define os nomes dos dois arquivos de saída: um contendo os crachás (PDF)
+# e o outro, os segredos (XLSX).
+badges_filename = "./output/%s-%s.pdf" % (year, month)
+secrets_filename = "./output/%s-%s_secrets.xlsx" % (year, month)
+
+pdf = canvas.Canvas(badges_filename)
 pdf.setFillColor(cfg['COLOR'])
 pdf.setFont("Helvetica", 12)
 
-locale.setlocale(locale.LC_TIME, 'pt_BR.utf8')
+SECRET_COL_NAME = 'Segredo'
+
+# Cria um DataFrame com os números de matrícula e nomes dados
+# e escolhe aleatoriamente os segredos.
+people = read_excel(input_filename, sheetname=0)
+seed(int(year + month))
+people[SECRET_COL_NAME] = Series(randint(0,100000,size=len(people)))
+people.to_excel(secrets_filename, index=False)
 
 # Gera cada uma das imagens, de 4 em 4 associados
 associates = []
 count = 1
-
-year = int(sys.argv[1])
-month = int(sys.argv[2])
-
-name_column_title = cfg['NAME_COL_NAME']
-title_column_title = cfg['TITLE_COL_NAME']
-secret_column_title = 'Secret'
-
-people = read_excel(cfg['INPUT_FILENAME'], sheetname=0)
-seed(int(year + month))
-people[secret_column_title] = Series(randint(0,100000,size=len(people)))
-print people
+month_name = "%s %s" % (datetime.date(year, month, 1).strftime('%B').upper(), str(year))
 
 for index, row in people.iterrows():
 
     associates.append({
-        'name': str(row[name_column_title]),
-        'title': str(row[title_column_title]),
-        'secret': row[secret_column_title]
+        'name'   : str(row['Nome']),
+        'title'  : str(row['Titulo']),
+        'secret' : row[SECRET_COL_NAME]
     })
 
-    #print associates
-
-    month_year = "%s %s" % (datetime.date(year, month, 1).strftime('%B').upper(), str(year))
-
     if len(associates) == 4:
-        draw_page(pdf, associates, month_year)
+        draw_page(pdf, associates, month_name)
         pdf.showPage()
 
         associates = []
@@ -56,8 +79,6 @@ for index, row in people.iterrows():
 
 # Gera a ultima imagem, com 1, 2 ou 3 associados
 if not len(associates) == 0:
-    draw_page(pdf, associates, month_year)
+    draw_page(pdf, associates, month_name)
 
 pdf.save()
-
-people.to_excel(cfg['SECRETS_FILE'], index=False)

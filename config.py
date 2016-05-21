@@ -3,13 +3,6 @@
 from reportlab.lib.colors import Color
 
 cfg = {
-  'TITLE_COL_NAME': 'Titulo',
-  'NAME_COL_NAME': 'Nome',
-  'YEAR': 2016,
-  'MONTH': 5, # eg., se maio, 5; se janeiro, 1
-  'INPUT_FILENAME': "input/maio_2016_compl.xlsx",
-  'OUTPUT_FILENAME': "output/maio_2016_compl.pdf",
-  'SECRETS_FILE': 'output/maio_2016_compl_secrets.xlsx',
   'BKG': "input/background.png",
   'BKG_WIDTH': 9,
   'BKG_HEIGHT': 13,

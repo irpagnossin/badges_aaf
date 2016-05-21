@@ -15,6 +15,8 @@ BKG_HEIGHT = 2 * cfg['BKG_HEIGHT'] * cm
 COLOR = cfg['COLOR']
 
 def draw_page(canvas, associates, month_year):
+    canvas.setFillColor(cfg['COLOR'])
+    #pdf.setFont("Helvetica", 12)
 
     canvas.drawImage(cfg['BKG'], 0, 0, width=BKG_WIDTH, height=BKG_HEIGHT)
 
@@ -42,7 +44,6 @@ def draw_title(canvas, title, (x,y)):
     canvas.drawCentredString(x, y, title)
 
 def draw_code(canvas, name, code, (x,y)):
-    print ">>> %s" % str(date.today().year)
     qrcode_content = 'Associação Atlética Floresta, ' + str(date.today().year) + ' | ' + name + ' | ' + str(code)
     q = QrCodeWidget(qrcode_content, barFillColor=COLOR)
     q.barHeight = 100
