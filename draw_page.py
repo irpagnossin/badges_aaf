@@ -15,10 +15,12 @@ BKG_HEIGHT = 2 * cfg['BKG_HEIGHT'] * cm
 COLOR = cfg['COLOR']
 
 def draw_page(canvas, associates, month_year):
+    canvas.setFillColor(cfg['COLOR'])
+    #pdf.setFont("Helvetica", 12)
 
     canvas.drawImage(cfg['BKG'], 0, 0, width=BKG_WIDTH, height=BKG_HEIGHT)
 
-    names = map(str.upper, [a['name'] for a in associates])
+    names = map(lambda s: s.decode('utf-8').upper(), [a['name'] for a in associates])
     titles = [a['title'] for a in associates]
     #plates = [a['plates'] for a in associates]
     secrets = [a['secret'] for a in associates]
