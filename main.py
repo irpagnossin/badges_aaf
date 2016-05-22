@@ -27,7 +27,8 @@ class Root(FloatLayout):
 
     year = ObjectProperty(None)
     month = ObjectProperty(None)
-    input_filename = ObjectProperty(None)
+    input_filename_btn = ObjectProperty(None)
+    input_filename = ''
 
     def default_year(self):
         return str(datetime.date.today().year)
@@ -49,7 +50,7 @@ class Root(FloatLayout):
             badges_filename = "./%s-%s.pdf" % (year, month)
             secrets_filename = "./%s-%s_secrets.xlsx" % (year, month)
 
-        generate_badges(self.input_filename.text, badges_filename, secrets_filename, month, year)
+        generate_badges(self.input_filename, badges_filename, secrets_filename, month, year)
 
         message = 'Os seguintes arquivos foram gerados:\n%s: contém os crachás.\n%s: contém os segredos.' % (badges_filename, secrets_filename)
 
@@ -70,7 +71,9 @@ class Root(FloatLayout):
 
     def load(self, path, filename):
         with open(os.path.join(path, filename[0])) as stream:
-            self.input_filename.text = filename[0]
+            self.input_filename = filename[0]
+            self.input_filename_btn.text = 'Arquivo de associados: ' + filename[0]
+            self.generate_badges_btn.disabled = False
 
         self.dismiss_popup()
 
@@ -79,6 +82,7 @@ class LoadDialog(FloatLayout):
     cancel = ObjectProperty(None)
 
 class MyApp(App):
+    title = 'Associação Atlética Floresta :: Gerador de crachás v0.1 (2016)'
     pass
 
 Factory.register('Root', cls=Root)

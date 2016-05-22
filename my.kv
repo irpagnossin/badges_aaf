@@ -4,38 +4,47 @@
 Root:
     year: year
     month: month
-    input_filename: input_filename
+    input_filename_btn: input_filename_btn
+    generate_badges_btn: generate_badges_btn
 
-    GridLayout:
-        rows: 4
-        cols: 2
-        row_default_height: 40
-        row_force_default: True
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+        spacing: 5
+        padding: 5
 
-        Label:
-            text: 'Ano:'
-        TextInput:
-            id: year
-            text: root.default_year()
+        BoxLayout:
+            Label:
+                text: 'Ano:'
+                font_size: 40
+            TextInput:
+                id: year
+                text: root.default_year()
+                font_size: 40
+                padding: [100,50,100,40]
 
-        Label:
-            text: 'Mês:'
-        TextInput:
-            id: month
-            text: root.default_month()
-
-        Label:
-            text: 'Arquivo de entrada:'
-        TextInput:
-            id: input_filename
-            text: ''
+        BoxLayout:
+            Label:
+                text: 'Mês:'
+                font_size: 40
+            TextInput:
+                id: month
+                text: root.default_month()
+                font_size: 40
+                padding: [100,50,100,40]
 
         Button:
+            id: input_filename_btn
+            text: 'Arquivos de associados: (clique para escolher)'
+            on_release: root.show_load()
+
+        Button:
+            id: generate_badges_btn
             text: 'Gerar crachás e segredos'
             on_release: root.gui_generate_badges()
-        Button:
-            text: '...'
-            on_release: root.show_load()
+            disabled: True
+
 
 <LoadDialog>:
     BoxLayout:
