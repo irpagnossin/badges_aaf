@@ -1,4 +1,41 @@
 #:kivy 1.1.0
+#:import today datetime.date
+
+Root:
+    year: year
+    month: month
+    input_filename: input_filename
+
+    GridLayout:
+        rows: 4
+        cols: 2
+        row_default_height: 40
+        row_force_default: True
+
+        Label:
+            text: 'Ano:'
+        TextInput:
+            id: year
+            text: root.default_year()
+
+        Label:
+            text: 'Mês:'
+        TextInput:
+            id: month
+            text: root.default_month()
+
+        Label:
+            text: 'Arquivo de entrada:'
+        TextInput:
+            id: input_filename
+            text: ''
+
+        Button:
+            text: 'Gerar crachás e segredos'
+            on_release: root.gui_generate_badges()
+        Button:
+            text: '...'
+            on_release: root.show_load()
 
 <LoadDialog>:
     BoxLayout:

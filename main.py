@@ -23,43 +23,19 @@ sys.setdefaultencoding('utf8')
 locale.setlocale(locale.LC_TIME, 'pt_BR.utf8')
 
 
-class Root(GridLayout):
+class Root(FloatLayout):
 
-    def __init__(self, **kwargs):
-        super(Root, self).__init__(**kwargs)
+    year = ObjectProperty(None)
+    month = ObjectProperty(None)
+    input_filename = ObjectProperty(None)
 
+    def default_year(self):
+        return str(datetime.date.today().year)
 
-        self.cols = 2
+    def default_month(self):
+        return str(datetime.date.today().month + 1)
 
-        today = datetime.date.today()
-
-        #
-        self.add_widget(Label(text='Ano'))
-        self.year = TextInput(multiline=False)
-        self.add_widget(self.year)
-        self.year.text = str(today.year)
-
-        self.add_widget(Label(text='Mês'))
-        self.month = TextInput(multiline=False)
-        self.add_widget(self.month)
-        self.month.text = str(today.month + 1)
-
-        self.add_widget(Label(text='Arquivo de entrada'))
-        self.input_filename = TextInput(multiline=False)
-        self.add_widget(self.input_filename)
-        #self.input_filename.text = u'./input/maio_2016_compl.xlsx'
-
-        self.generate_badges_btn = Button(text='Gerar crachás e segredos', font_size=14)
-        self.add_widget(self.generate_badges_btn)
-        self.generate_badges_btn.bind(on_press=self.gui_generate_badges)
-
-        self.choose_file_btn = Button(text='...', font_size=14)
-        self.add_widget(self.choose_file_btn)
-        self.choose_file_btn.bind(on_press=self.show_load)
-
-
-
-    def gui_generate_badges(self, event):
+    def gui_generate_badges(self):
 
         month = int(self.month.text)
         year = int(self.year.text)
@@ -86,15 +62,15 @@ class Root(GridLayout):
     def dismiss_popup(self):
         self._popup.dismiss()
 
-    def show_load(self, event):
+    def show_load(self):
         content = LoadDialog(load=self.load, cancel=self.dismiss_popup)
-        self._popup = Popup(title="Escolha o arquivo de entrada", content=content,
+        self._popup = Popup(title="Escolha o arquivo com a lista de associados", content=content,
                             size_hint=(0.9, 0.9))
         self._popup.open()
 
     def load(self, path, filename):
         with open(os.path.join(path, filename[0])) as stream:
-            self.input_filename.text = filename[0]#stream.read()
+            self.input_filename.text = filename[0]
 
         self.dismiss_popup()
 
@@ -103,11 +79,6 @@ class LoadDialog(FloatLayout):
     cancel = ObjectProperty(None)
 
 class MyApp(App):
-
-    def build(self):
-        return Root()
-
-class BadgeGenerator(App):
     pass
 
 Factory.register('Root', cls=Root)
