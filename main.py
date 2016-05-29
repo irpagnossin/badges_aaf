@@ -31,10 +31,15 @@ class Root(FloatLayout):
     input_filename = ''
 
     def default_year(self):
-        return str(datetime.date.today().year)
+        today = datetime.date.today()
+        year = today.year if today.month < 12 else today.year + 1
+        return str(year)
 
     def default_month(self):
-        return str(datetime.date.today().month + 1)
+        month = datetime.date.today().month + 1
+        if month == 13:
+            month = 1
+        return str(month)
 
     def gui_generate_badges(self):
 
