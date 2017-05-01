@@ -14,4 +14,6 @@ cfg = {
     'PLATE_SPOTS': [(20,33), (275,33), (20, 400), (275,400)],
     'QR_SPOTS': [(200,57),(454,57),(200,425),(454,425)],
     'DATE_POS': [(127,125),(385,125),(127,501),(385,501)],
+	'DEFAULT_INPUT_PATH': 'C:/Users/Luci/Documents/Floresta/crachas/entrada_de_dados',
+	'DEFAULT_OUTPUT_PATH': 'C:/Users/Luci/Documents/Floresta/crachas/saida_de_dados'
 }

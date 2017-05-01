@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+﻿#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from read_csv import read_csv
 from draw_page import draw_page
@@ -10,10 +10,15 @@ from numpy.random import seed, randint
 import datetime
 import locale
 import sys
+import platform
 
 reload(sys)
 sys.setdefaultencoding('utf8')
-locale.setlocale(locale.LC_TIME, 'pt_BR.utf8')
+
+if platform.system().lower() == 'windows':
+	locale.setlocale(locale.LC_TIME, 'portuguese_brazil') # Windows
+else:
+	locale.setlocale(locale.LC_TIME, 'pt_BR.utf8') # Linux
 
 anualistas = False
 
@@ -75,7 +80,7 @@ for index, row in people.iterrows():
 
     associates.append({
         'name'   : str(row['Nome']),
-        'title'  : str(row['Titulo']),
+        'title'  : str(row['Título']),
         'secret' : row[SECRET_COL_NAME]
     })
 
