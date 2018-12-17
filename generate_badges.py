@@ -15,84 +15,92 @@ import platform
 reload(sys)
 sys.setdefaultencoding('utf8')
 
-if platform.system().lower() == 'windows':
-	locale.setlocale(locale.LC_TIME, 'portuguese_brazil') # Windows
-else:
-	locale.setlocale(locale.LC_TIME, 'pt_BR.utf8') # Linux
+def generate_badges():
+	"""
+	python generate_badges.py input/jan_2018.xlsx 1 2018
+	"""
 
-anualistas = False
+	if platform.system().lower() == 'windows':
+		locale.setlocale(locale.LC_TIME, 'portuguese_brazil') # Windows
+	else:
+		locale.setlocale(locale.LC_TIME, 'pt_BR.utf8') # Linux
 
-n_args = len(sys.argv)
+	anualistas = False
 
-# Define o nome do arquivo de entrada a partir dos argumentos
-if n_args >= 2:
-    input_filename = sys.argv[1]
-else:
-    raise Exception('Qual é o arquivo de entrada?')
+	n_args = len(sys.argv)
 
-# Se o mês for dado como argumento (numérico: 1..12), usa-o;
-# se não, usa o mês seguinte ao atual.
-if n_args >= 3:
-    month = int(sys.argv[2])
-    anualistas = month == 0
-else:
-    month = datetime.date.today().month + 1
+	# Define o nome do arquivo de entrada a partir dos argumentos
+	if n_args >= 2:
+	    input_filename = sys.argv[1]
+	else:
+	    raise Exception('Qual é o arquivo de entrada?')
 
-# Se o ano for dado como argumento (numérico), usa-o;
-# se não, usa o ano atual.
-if n_args >= 4:
-    year = int(sys.argv[3])
-else:
-    year = datetime.date.today().year
+	# Se o mês for dado como argumento (numérico: 1..12), usa-o;
+	# se não, usa o mês seguinte ao atual.
+	if n_args >= 3:
+	    month = int(sys.argv[2])
+	    anualistas = month == 0
+	else:
+	    month = datetime.date.today().month + 1
 
-# Define os nomes dos dois arquivos de saída: um contendo os crachás (PDF)
-# e o outro, os segredos (XLSX).
-if anualistas:
-    badges_filename = "./output/%s.pdf" % year
-    secrets_filename = "./output/%s_secrets.xlsx" % year
-else:
-    badges_filename = "./output/%s-%s.pdf" % (year, month)
-    secrets_filename = "./output/%s-%s_secrets.xlsx" % (year, month)
+	# Se o ano for dado como argumento (numérico), usa-o;
+	# se não, usa o ano atual.
+	if n_args >= 4:
+	    year = int(sys.argv[3])
+	else:
+	    year = datetime.date.today().year
 
-pdf = canvas.Canvas(badges_filename)
-pdf.setFillColor(cfg['COLOR'])
-pdf.setFont(cfg['FONT_FAMILY'], cfg['FONT_SIZE'])
+	# Define os nomes dos dois arquivos de saída: um contendo os crachás (PDF)
+	# e o outro, os segredos (XLSX).
+	if anualistas:
+	    badges_filename = "./output/%s.pdf" % year
+	    secrets_filename = "./output/%s_secrets.xlsx" % year
+	else:
+	    badges_filename = "./output/%s-%s.pdf" % (year, month)
+	    secrets_filename = "./output/%s-%s_secrets.xlsx" % (year, month)
 
-SECRET_COL_NAME = 'Segredo'
+	pdf = canvas.Canvas(badges_filename)
+	pdf.setFillColor(cfg['COLOR'])
+	pdf.setFont(cfg['FONT_FAMILY'], cfg['FONT_SIZE'])
 
-# Cria um DataFrame com os números de matrícula e nomes dados
-# e escolhe aleatoriamente os segredos.
-people = read_excel(input_filename, sheetname=0)
-seed(int(year + month))
-people[SECRET_COL_NAME] = Series(randint(0,100000,size=len(people)))
-people.to_excel(secrets_filename, index=False)
+	SECRET_COL_NAME = 'Segredo'
 
-# Gera cada uma das imagens, de 4 em 4 associados
-associates = []
-count = 1
+	# Cria um DataFrame com os números de matrícula e nomes dados
+	# e escolhe aleatoriamente os segredos.
+	people = read_excel(input_filename, sheetname=0)
+	seed(int(year + month))
+	people[SECRET_COL_NAME] = Series(randint(0,100000,size=len(people)))
+	people.to_excel(secrets_filename, index=False)
 
-if anualistas:
-    month_name = str(year)
-else:
-    month_name = "%s %s" % (datetime.date(year, month, 1).strftime('%B').upper(), str(year))
+	# Gera cada uma das imagens, de 4 em 4 associados
+	associates = []
+	count = 1
 
-for index, row in people.iterrows():
+	if anualistas:
+	    month_name = str(year)
+	else:
+	    month_name = "%s %s" % (datetime.date(year, month, 1).strftime('%B').upper(), str(year))
 
-    associates.append({
-        'name'   : str(row['Nome']),
-        'title'  : str(row['Título']),
-        'secret' : row[SECRET_COL_NAME]
-    })
+	for index, row in people.iterrows():
 
-    if len(associates) == 4:
-        draw_page(pdf, associates, month_name)
-        pdf.showPage()
+	    associates.append({
+	        'name'   : str(row['Nome']),
+	        'title'  : str(row['Título']),
+	        'secret' : row[SECRET_COL_NAME]
+	    })
 
-        associates = []
-        count += 1
+	    if len(associates) == 4:
+	        draw_page(pdf, associates, month_name)
+	        pdf.showPage()
 
-# Gera a ultima imagem, com 1, 2 ou 3 associados
-if not len(associates) == 0:
-    draw_page(pdf, associates, month_name)
+	        associates = []
+	        count += 1
 
-pdf.save()
+	# Gera a ultima imagem, com 1, 2 ou 3 associados
+	if not len(associates) == 0:
+	    draw_page(pdf, associates, month_name)
+
+	pdf.save()
+
+if __name__ == '__main__':
+	generate_badges()
