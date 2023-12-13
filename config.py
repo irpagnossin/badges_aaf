@@ -6,7 +6,7 @@ cfg = {
     'FONT_FAMILY': 'Helvetica',
     'FONT_SIZE': 12,
     'COLOR': Color(0.38,0.10,0.28),
-    'BKG': "input/background.png",
+    'BKG': "assets/background.png",
     'BKG_WIDTH': 9,
     'BKG_HEIGHT': 13,
     'NAME_SPOTS': [(127,195),(385,195),(127,561),(385,561)],

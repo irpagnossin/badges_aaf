@@ -11,8 +11,6 @@ import datetime
 import locale
 import sys
 
-reload(sys)
-sys.setdefaultencoding('utf8')
 locale.setlocale(locale.LC_TIME, 'pt_BR.utf8')
 
 def generate_badges(input_filename, badges_filename, secrets_filename, month, year):
@@ -26,7 +24,7 @@ def generate_badges(input_filename, badges_filename, secrets_filename, month, ye
 
     # Cria um DataFrame com os números de matrícula e nomes dados
     # e escolhe aleatoriamente os segredos.
-    people = read_excel(input_filename, sheetname=0)
+    people = read_excel(input_filename)
     seed(int(year + month))
     people[SECRET_COL_NAME] = Series(randint(0,100000,size=len(people)))
     people.to_excel(secrets_filename, index=False)

@@ -10,7 +10,7 @@ from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.textinput import TextInput
 from kivy.uix.popup import Popup
-kivy.require('1.0.6') # replace with your current kivy version !
+kivy.require('2.2.1') # replace with your current kivy version !
 import datetime
 import locale
 import os
@@ -18,8 +18,6 @@ import os
 from generate_badges import generate_badges
 
 import sys
-reload(sys)
-sys.setdefaultencoding('utf8')
 locale.setlocale(locale.LC_TIME, 'pt_BR.utf8')
 
 
@@ -49,11 +47,11 @@ class Root(FloatLayout):
         anualistas = month == 0
 
         if anualistas:
-            badges_filename = "./%s.pdf" % year
-            secrets_filename = "./%s_secrets.xlsx" % year
+            badges_filename = "./output/%s.pdf" % year
+            secrets_filename = "./output/%s_secrets.xlsx" % year
         else:
-            badges_filename = "./%s-%s.pdf" % (year, month)
-            secrets_filename = "./%s-%s_secrets.xlsx" % (year, month)
+            badges_filename = "./output/%s-%s.pdf" % (year, month)
+            secrets_filename = "./output/%s-%s_secrets.xlsx" % (year, month)
 
         generate_badges(self.input_filename, badges_filename, secrets_filename, month, year)
 

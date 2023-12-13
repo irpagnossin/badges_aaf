@@ -20,7 +20,7 @@ def draw_page(canvas, associates, month_year):
 
     canvas.drawImage(cfg['BKG'], 0, 0, width=BKG_WIDTH, height=BKG_HEIGHT)
 
-    names = map(lambda s: s.decode('utf-8').upper(), [a['name'] for a in associates])
+    names = [a['name'].upper() for a in associates]
     titles = [a['title'] for a in associates]
     #plates = [a['plates'] for a in associates]
     secrets = [a['secret'] for a in associates]
@@ -29,21 +29,28 @@ def draw_page(canvas, associates, month_year):
         name = names[i]
         title = titles[i]
         secret = secrets[i]
-        draw_name(canvas, abbreviate(name, 27), cfg['NAME_SPOTS'][i])
-        draw_title(canvas, title, cfg['TITLE_SPOTS'][i])
-        draw_code(canvas, name, secret, cfg['QR_SPOTS'][i])
-        draw_date(canvas, month_year, cfg['DATE_POS'][i])
+        x, y = cfg['NAME_SPOTS'][i]
+        draw_name(canvas, abbreviate(name, 27), x, y)
 
-def draw_name(canvas, name, (x,y)):
-    canvas.setFont("Helvetica", 14)
-    canvas.drawCentredString(x, y, name.decode('utf-8', errors='ignore'))
+        x, y = cfg['TITLE_SPOTS'][i]
+        draw_title(canvas, title, x, y)
 
-def draw_title(canvas, title, (x,y)):
+        x, y = cfg['QR_SPOTS'][i]
+        draw_code(canvas, name, secret, x, y)
+
+        x, y = cfg['DATE_POS'][i]
+        draw_date(canvas, month_year, x, y)
+
+def draw_name(canvas, name, x, y):
     canvas.setFont("Helvetica", 14)
-    title = ("MATRÍCULA: " + title).decode('utf-8', errors='ignore')
+    canvas.drawCentredString(x, y, name)
+
+def draw_title(canvas, title, x, y):
+    canvas.setFont("Helvetica", 14)
+    title = "MATRÍCULA: " + title
     canvas.drawCentredString(x, y, title)
 
-def draw_code(canvas, name, code, (x,y)):
+def draw_code(canvas, name, code, x, y):
     qrcode_content = 'Associação Atlética Floresta, ' + str(date.today().year) + ' | ' + name + ' | ' + str(code)
     q = QrCodeWidget(qrcode_content, barFillColor=COLOR)
     q.barHeight = 100
@@ -52,6 +59,6 @@ def draw_code(canvas, name, code, (x,y)):
     d.add(q)
     renderPDF.draw(d, canvas, x-q.barWidth/2, y-q.barHeight/2)
 
-def draw_date(canvas, month_year, (x,y)):
+def draw_date(canvas, month_year, x, y):
     canvas.setFont("Helvetica", 20)
     canvas.drawCentredString(x, y, month_year)
